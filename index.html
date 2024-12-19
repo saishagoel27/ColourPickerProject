@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas"></canvas>
+    <input type="color" name="" id="color">
+    <p id="hex"></p>
+    <button id="capture">Capture Image</button>
+</body>
+<script>
+    const colorPick = document.getElementById("color");
+    colorPick.addEventListener("change", () => {
+        document.getElementbyId("hex").innerText = colorPick.value;
+    })
+
+  navigator.mediaDevices.getUserMedia({
+    video: true,
+    audio: false
+  })
+  .then(stream => {
+    video.srcObject = stream;
+    video.addEventListner("loadeddata", () => {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+    })
+  })
+
+  const captureBtn = document.getElementById("capture");
+  captureBtn.addEventListener("click", () =>{
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  })
+</script>
+</html>
